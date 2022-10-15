@@ -111,7 +111,7 @@ int main(){
       if( F[j] == F[i] ){
         for( k = j; k < sapato.Feminino; k++ )
           F[k] = F[k + 1];
-          sapato.qtdF[k-2] = aux+1;
+          sapato.qtdF[i] = sapato.qtdF[i]+1;
           sapato.Feminino--;
           }
       else{
@@ -168,7 +168,7 @@ int main(){
       if( M[j] == M[i] ){
         for( k = j; k < sapato.Masculino; k++ )
           M[k] = M[k + 1];
-          sapato.qtdM[k-2] = aux+1;
+          sapato.qtdM[i] = sapato.qtdM[i]+1;
           sapato.Masculino--;
         }
       else{
