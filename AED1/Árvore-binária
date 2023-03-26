@@ -1,0 +1,220 @@
+/* Programa: Árvore
+
+   Autor: Rafael Braga Ennes
+
+   Versao: 1.0 - 25/11/2022
+
+*/
+
+// ##################### Bibliotecas Externas ##############################
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+// ########################## TAD X.h ######################################
+#define MAX 20
+
+struct noArvore {
+char nome[MAX];
+char sexo[MAX];
+int ano;
+char pais[MAX];
+struct noArvore* esq;
+struct noArvore* dir;
+
+};
+typedef struct noArvore tipoA;
+ 
+//inicialização de lista
+void inicializa (char raiz[MAX],char sexo[MAX],int ano,tipoA *arvoreAux)
+{
+  int j;
+  for(j=0;j<20;j++){
+    arvoreAux->nome[j] = 0;
+    arvoreAux->sexo[j] = 0;
+    arvoreAux->pais[j] = 0;
+  }
+  strcpy(arvoreAux->nome,raiz);
+  strcpy(arvoreAux->sexo,sexo);
+  arvoreAux->ano = ano;
+  arvoreAux->esq = NULL;
+  arvoreAux->dir=NULL;
+}
+
+//Inserção de elemento na árvore
+tipoA* insereNo(char chave[MAX], char sexo[MAX], int ano, char pais[MAX]) {
+  int i;
+  tipoA* novo = malloc(sizeof(tipoA));
+  for(i=0;i<20;i++){
+    novo->nome[i] = 0;
+    novo->sexo[i] = 0;
+    novo->pais[i] = 0;
+  }
+  strcpy(novo->nome,chave);
+  strcpy(novo->sexo,sexo);
+  strcpy(novo->pais,pais);
+  novo->ano = ano;
+  novo->dir = NULL;
+  novo->esq= NULL;
+  return novo;
+}
+
+void insereA (char chave[MAX], char sexo[MAX], int ano, char pais[MAX], tipoA *Aux){
+  if(strcmp(Aux->nome,pais)!=0){
+    if(Aux->esq != NULL){
+      insereA(chave,sexo,ano,pais,Aux->esq);
+    }
+    if(Aux->dir != NULL){
+      insereA(chave,sexo,ano,pais,Aux->dir);
+    }
+  }
+  else{
+    if (Aux->esq == NULL){
+      Aux->esq = insereNo (chave, sexo, ano, pais);}
+    else if (Aux->dir == NULL){
+      Aux->dir = insereNo (chave, sexo, ano, pais);}
+    else{
+      return;
+  }}
+}
+
+//Remoção de elemento na árvore
+void procurapaiss(char nome[MAX],char pais[MAX], tipoA *Aux){
+  if(strcmp(Aux->nome,pais)!=0){
+    if(Aux->esq != NULL){
+      procurapaiss(nome,pais,Aux->esq);
+    }
+    if(Aux->dir != NULL){
+      procurapaiss(nome,pais,Aux->dir);
+    }
+  }
+  if(strcmp(Aux->nome,pais)==0){
+    if(strcmp(Aux->esq->nome,nome)==0){
+      Aux->esq = NULL;
+    }
+    else if(strcmp(Aux->dir->nome,nome)==0){
+      Aux->dir = NULL;
+    }}
+}
+
+
+void procurapais(char nome[MAX], tipoA *Aux, tipoA *novo){
+  if(strcmp(Aux->nome,nome)!=0){
+    if(Aux->esq != NULL){
+      procurapais(nome,Aux->esq,Aux);
+    }
+    if(Aux->dir != NULL){
+      procurapais(nome,Aux->dir,Aux);
+    }
+  }
+  if(strcmp(Aux->nome,nome)==0){
+    procurapaiss(nome, Aux->pais ,novo);
+  }
+}
+
+void removeno(char nome[MAX], tipoA *Aux){
+  int s = 0;
+  if(strcmp(Aux->nome,nome)!=0){
+      procurapais(nome,Aux,Aux);
+  }
+  else{
+    Aux->ano = 0;
+    for(s=0;s<20;s++){
+      Aux->nome[s] = 0;
+      Aux->sexo[s] = 0;
+      Aux->pais[s] = 0;
+    }
+    Aux->esq = NULL;
+    Aux->dir = NULL;
+  }
+}
+
+
+// ###################### Funcoes e Procedimentos do programa ##############
+
+//Impressão da ordem do trono
+void imprime(tipoA *imp){
+  char m[MAX];
+  char f[MAX];
+  int i;
+  for(i=0;i<20;i++){
+    m[i] = 0;
+    f[i] = 0;
+  }
+  for(i=0;i<1;i++){
+    m[i] = 'M';
+    f[i] = 'F';
+  }
+  printf("%s\n", imp->nome);
+  if(imp->esq != NULL &&  imp->esq->ano < 2011 && imp->dir != NULL){
+      if(strcmp(imp->esq->sexo,f) == 0 && strcmp(imp->dir->sexo,m) == 0){
+        if(imp->dir != NULL){
+          imprime(imp->dir);
+        }
+        if(imp->esq != NULL){
+          imprime(imp->esq);
+        }
+      }
+      else{
+        if(imp->esq != NULL){
+          imprime(imp->esq);
+        }
+        if(imp->dir != NULL){
+          imprime(imp->dir);
+  }}}
+  else{
+    if(imp->esq != NULL){
+        imprime(imp->esq);
+      }
+    if(imp->dir != NULL){
+      imprime(imp->dir);
+    }
+  }
+}
+
+void zera(char nome[MAX], char sexo[MAX], char pais[MAX]){
+  int j;
+  for(j=0;j<20;j++){
+    nome[j] = 0;
+    sexo[j] = 0;
+    pais[j] = 0;
+  }
+}
+
+void copia(char raiz[MAX],tipoA *Aux){
+  strcpy(Aux->nome,raiz);
+}
+// ########################### Principal ###################################
+ 
+int main (){
+  int i = 0;
+  int MOV = 0;
+  int acao = 0;
+  char raiz[MAX];
+  char nome[MAX];
+  char sexo[MAX];
+  char pais[MAX];
+  int ano;
+  
+  tipoA minhaArvore;
+  scanf("%s %s %d",raiz,sexo,&ano);
+  inicializa(raiz,sexo,ano,&minhaArvore);
+  scanf("%d",&MOV);
+  if(MOV > 100 || MOV<1){
+    scanf("%d",&MOV);}
+  while(i<MOV){
+    scanf("%d",&acao);
+    zera(nome,sexo,pais);
+    if(acao == 1){
+      scanf("%s %s %d %s",nome,sexo,&ano,pais);
+      copia(raiz,&minhaArvore);
+      insereA(nome,sexo,ano,pais,&minhaArvore);
+    }
+    else{
+      scanf("%s",nome);
+      removeno(nome,&minhaArvore);
+    }
+    i++;
+  }
+  imprime(&minhaArvore);
+return 0;
+}
