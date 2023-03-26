@@ -1,0 +1,154 @@
+/* Programa: Lista estatica encadeada circular
+
+   Autor: Rafael Braga Ennes
+
+   Versao: 1.0 - 12/10/2022
+
+*/
+
+// ##################### Bibliotecas Externas ##############################
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+// ########################## TAD X.h ######################################
+#define numero 100
+
+struct pilha{
+  int elemento[numero];
+  int topo;
+  int elementob[numero];
+  int topob;
+  int tamanho;
+};
+typedef struct pilha tipoPilha;
+ 
+//inicialização de lista
+void inicializaPilha(tipoPilha *pilhaAux) {
+int i;
+for (i=0; i<=numero-1; i++){
+  pilhaAux->elemento[i] = 0;
+  pilhaAux->topo = -1;
+}
+for (i=0; i<=numero-1; i++){
+  pilhaAux->elementob[i] = 0;
+  pilhaAux->topob = -1;
+}
+}
+
+//Empilhamento
+
+void empilharb (tipoPilha *pilhaAux, int val){
+int aux = 0;
+int j = 0;
+int i = 0;
+pilhaAux->tamanho = 1;
+
+  if (pilhaAux->topo >= numero-1){
+    return;}
+  else {
+    aux = val;
+    if(val%2 == 1){
+      aux = val-1;
+    }
+    while(aux>=2){
+      pilhaAux->tamanho++;
+      aux = aux/2;
+      if(aux%2 == 1){
+        aux = aux-1;
+      }
+    }
+    for(j=0;j<pilhaAux->tamanho;j++){
+      if(val%2 == 1){
+        pilhaAux->topob++;
+        pilhaAux->elementob[pilhaAux->topob] = 1;
+      }
+      else{
+        pilhaAux->topob++;
+        pilhaAux->elementob[pilhaAux->topob] = 0;
+      }
+    val = val/2;
+    }
+  }
+}
+
+void empilhar (tipoPilha *pilhaAux){
+int k = 0;
+int r = 0;
+  if(pilhaAux->tamanho == 1){
+    pilhaAux->topo++;
+    pilhaAux->elemento[pilhaAux->topo] = pilhaAux->elementob[pilhaAux->topob];
+    printf("%d ", pilhaAux->elemento[0]);
+  }
+  else{
+    for(k=0;k<pilhaAux->tamanho;k++){
+      pilhaAux->topo++;
+      pilhaAux->elemento[pilhaAux->topo] = pilhaAux->elementob[pilhaAux->topob];
+      pilhaAux->topob--;
+    }
+    while(r != pilhaAux->topo){
+      printf("%d", pilhaAux->elemento[r]);
+      r++;}
+    if(r == pilhaAux->topo){
+      printf("%d ", pilhaAux->elemento[r]);
+    }
+  }
+}
+
+void inversao (tipoPilha *pilhaAux){
+  int i = 0;
+  int r = 0;
+  for(i=0;i<pilhaAux->tamanho;i++){
+    if(pilhaAux->elemento[i] ==  1){
+      pilhaAux->elemento[i] = 0 ; 
+    }
+    else{
+      pilhaAux->elemento[i] = 1 ; 
+    }
+  }
+  while(r != pilhaAux->topo){
+    printf("%d", pilhaAux->elemento[r]);
+    r++;}
+  if(r == pilhaAux->topo){
+    printf("%d ", pilhaAux->elemento[r]);
+  }
+} 
+
+void bd (tipoPilha *pilhaAux){
+  int i = 0;
+  int aux = 0;
+  for(i=0;i<pilhaAux->tamanho;i++){
+    if(pilhaAux->elemento[pilhaAux->topo] == 1){
+      aux = aux + pow(2, i);
+    }
+    pilhaAux->topo--;
+  }
+  printf("%d\n", aux);
+}
+
+// ###################### Funcoes e Procedimentos do programa ##############
+
+// ########################### Principal ###################################
+ 
+int main (){
+  int i = 0;
+  int x = 0;
+  int MOV = 0;
+  int n = 0;
+  int ID = 0;
+
+  tipoPilha minhaPilha;
+  scanf("%d",&MOV);
+  
+  while(MOV!=0){
+    scanf("%d",&n);
+    printf("%d ",n);
+    inicializaPilha(&minhaPilha);
+    empilharb(&minhaPilha,n);
+    empilhar(&minhaPilha);
+    inversao(&minhaPilha);
+    bd(&minhaPilha);
+    MOV = MOV - 1;
+  }
+    
+return 0;
+}
